@@ -1,9 +1,40 @@
-const config=window.MYTT;let singlesPlayers=[],doublesTeams=[],playerDb=[],matchResults=[];
+const config=window.MYTT;let singlesPlayers=[],doublesTeams=[],playerDb=[],matchResults=[],equipmentItems=[],equipmentCategory="all";
 const TIERS=[{min:-Infinity,name:"Novice",icon:"🌿",cls:"tier-novice",next:1500},{min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",next:1600},{min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",next:1700},{min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",next:1800},{min:1800,name:"Master",icon:"🔥",cls:"tier-master",next:1900},{min:1900,name:"Legend",icon:"👑",cls:"tier-legend",next:2000},{min:2000,name:"Grandmaster",icon:"💎",cls:"tier-grandmaster",next:2100},{min:2100,name:"Immortal",icon:"⚡",cls:"tier-immortal",next:2200},{min:2200,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",next:null}];
 function getTier(r){const rating=Number(r)||0;let t=TIERS[0];for(const tier of TIERS){if(rating>=tier.min)t=tier}return t}
 function tierHTML(r){const t=getTier(r);return `<span class="tier-pill ${t.cls}">${t.icon} ${t.name}</span>`}
 function progressHTML(r){const rating=Number(r)||0;const t=getTier(r);if(!t.next)return `<div class="tier-progress"><div class="tier-progress-top"><span>${t.icon} ${t.name}</span><span>Top Tier</span></div><div class="progress-track"><div class="progress-fill" style="width:100%"></div></div><div class="progress-note">You have reached MYTT Champion tier.</div></div>`;const base=t.min===-Infinity?1400:t.min;const pct=Math.max(0,Math.min(100,((rating-base)/(t.next-base))*100));const next=TIERS.find(x=>x.min===t.next);return `<div class="tier-progress"><div class="tier-progress-top"><span>${t.icon} ${t.name}</span><span>${next.icon} ${next.name}</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-note">${rating} / ${t.next} · ${t.next-rating} pts to ${next.name}</div></div>`}
-function parseCSV(t){const r=[];let row=[],cell="",q=false;for(let i=0;i<t.length;i++){const c=t[i],n=t[i+1];if(c=='"'&&q&&n=='"'){cell+='"';i++}else if(c=='"'){q=!q}else if(c==","&&!q){row.push(cell.trim());cell=""}else if((c=="\n"||c=="\r")&&!q){if(cell||row.length){row.push(cell.trim());r.push(row);row=[];cell=""}if(c=="\r"&&n=="\n")i++}else cell+=c}if(cell||row.length){row.push(cell.trim());r.push(row)}return r}
+
+function rankJourneyHTML(r){
+  const rating = Number(r) || 0;
+  const tiers = TIERS.filter(t => t.min >= 1500);
+  const currentTier = getTier(rating);
+
+  return `<div class="rank-journey-panel">
+    <div class="rank-journey-head">
+      <div>
+        <small>MYTT RANK JOURNEY</small>
+        <h3>Climb to the Top</h3>
+      </div>
+      <strong>${rating}</strong>
+    </div>
+
+    <div class="rank-road">
+      ${tiers.map(t=>{
+        const reached = rating >= t.min;
+        const current = currentTier.name === t.name;
+        return `<div class="rank-node ${reached ? "reached" : ""} ${current ? "current" : ""}">
+          <div class="rank-dot">${t.icon}</div>
+          <span>${t.name}</span>
+          <small>${t.min}</small>
+        </div>`;
+      }).join("")}
+    </div>
+
+    <div class="rank-journey-note">
+      ${progressHTML(r)}
+    </div>
+  </div>`;
+}function parseCSV(t){const r=[];let row=[],cell="",q=false;for(let i=0;i<t.length;i++){const c=t[i],n=t[i+1];if(c=='"'&&q&&n=='"'){cell+='"';i++}else if(c=='"'){q=!q}else if(c==","&&!q){row.push(cell.trim());cell=""}else if((c=="\n"||c=="\r")&&!q){if(cell||row.length){row.push(cell.trim());r.push(row);row=[];cell=""}if(c=="\r"&&n=="\n")i++}else cell+=c}if(cell||row.length){row.push(cell.trim());r.push(row)}return r}
 function cleanRows(rows){return rows.filter(row=>row.some(cell=>String(cell).trim()!="")).slice(1)}
 async function fetchRows(csvUrl){const url=csvUrl+(csvUrl.includes("?")?"&":"?")+"t="+Date.now();const res=await fetch(url);if(!res.ok)throw new Error("Unable to load CSV");return cleanRows(parseCSV(await res.text()))}
 function slug(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"").trim()}
@@ -136,7 +167,7 @@ function openProfile(name){
       ${profileStatCard("Win Rate",lb.winRate,"🎯")}
       ${profileStatCard("Matches",matches,"📅")}
     </div>
-    <div class="rank-progress-pro">${progressHTML(lb.rating)}</div>
+    ${rankJourneyHTML(lb.rating)}
     ${careerSummaryHTML(lb,playerName)}
     <div class="profile-panel"><h3>🏓 Player Info</h3><div class="equipment-row"><small>Grip</small><strong>${db?.grip||"-"}</strong></div><div class="equipment-row"><small>Hand</small><strong>${db?.hand||"-"}</strong></div><div class="equipment-row"><small>Blade</small><strong>${db?.blade||"-"}</strong></div><div class="equipment-row"><small>FH Rubber</small><strong>${db?.fh||"-"}</strong></div><div class="equipment-row"><small>BH Rubber</small><strong>${db?.bh||"-"}</strong></div><div class="equipment-row"><small>Member Since</small><strong>${db?.joined||"-"}</strong></div></div>
     ${recentMatchesHTML(playerName)}
@@ -146,11 +177,81 @@ function openProfile(name){
   `;
   document.getElementById("profileModal").classList.remove("hidden");
 }
-function closeProfile(){document.getElementById("profileModal").classList.add("hidden")}
+function closeProfile(){
+  const modal = document.getElementById("profileModal");
+  if(modal) modal.classList.add("hidden");
+  document.body.classList.remove("modal-open","profile-open","no-scroll");
+}
 function getPlayerList(){const map=new Map();singlesPlayers.forEach(p=>map.set(slug(p.name),{source:"leaderboard",db:findDbByName(p.name),lb:p,name:p.name}));playerDb.forEach(db=>{const k=slug(db.name);if(!map.has(k))map.set(k,{source:"approved",db,lb:findLbByName(db.name),name:db.name});else map.get(k).db=db});return [...map.values()].sort((a,b)=>(Number(b.lb.rating)||0)-(Number(a.lb.rating)||0))}
 function renderPlayers(){const grid=document.getElementById("playersGrid");if(!grid)return;const q=(document.getElementById("playersSearch")?.value||"").toLowerCase();const filter=document.getElementById("playersFilter")?.value||"all";let list=getPlayerList();if(filter==="approved")list=list.filter(x=>x.db);if(filter==="leaderboard")list=list.filter(x=>x.source==="leaderboard");if(q)list=list.filter(x=>x.name.toLowerCase().includes(q));if(!list.length){grid.innerHTML=`<p class="loading">No players found.</p>`;return}grid.innerHTML=list.map(x=>`<div class="player-card" data-player="${encodeURIComponent(x.name)}"><div class="player-card-top">${avatarHTML(x.db,"avatar")}<div><h3>${x.name}</h3><p>${x.db?.id||"Leaderboard Player"}</p>${tierHTML(x.lb.rating)}</div></div><div class="mini-stats"><div class="mini-stat"><small>Rating</small><strong>${x.lb.rating}</strong></div><div class="mini-stat"><small>Peak</small><strong>${x.lb.peak}</strong></div><div class="mini-stat"><small>Rank</small><strong>#${x.lb.rank}</strong></div></div><p>🏓 ${x.db?.grip||"-"} · ${x.db?.hand||"-"}</p></div>`).join("")}
 function renderSearch(){const input=document.getElementById("globalSearch"),results=document.getElementById("searchResults");if(!input||!results)return;const q=input.value.trim().toLowerCase();if(!q){results.innerHTML=`<p class="muted">Type a player name to view rating, tier and profile.</p>`;return}const items=getPlayerList().filter(i=>i.name.toLowerCase().includes(q)).slice(0,8);if(!items.length){results.innerHTML=`<p class="muted">No player found.</p>`;return}results.innerHTML=items.map(i=>`<div class="search-result" data-player="${encodeURIComponent(i.name)}"><div class="search-rank">${rankLabel(i.lb.rank)}</div><div><div class="search-name">${i.name}</div><div class="search-meta">${tierHTML(i.lb.rating)} · W-L ${i.lb.record} · Peak ${i.lb.peak}</div></div><div class="search-rating">${i.lb.rating}</div></div>`).join("")}
-function bindEvents(){document.addEventListener("input",e=>{if(e.target.id==="globalSearch")renderSearch();if(e.target.id==="playersSearch")renderPlayers()});document.addEventListener("change",e=>{if(e.target.id==="playersFilter")renderPlayers()});document.addEventListener("click",e=>{const p=e.target.closest("[data-player]");if(p){e.stopPropagation();openProfile(p.dataset.player);}if(e.target.matches("[data-close-modal]"))closeProfile()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeProfile()})}
+
+function equipmentField(row,aliases){const entries=Object.entries(row);for(const alias of aliases){const wanted=slug(alias);const hit=entries.find(([key])=>slug(key)===wanted||slug(key).includes(wanted)||wanted.includes(slug(key)));if(hit&&String(hit[1]??"").trim())return String(hit[1]).trim()}return ""}
+function driveImageUrl(value){if(!value)return "";const first=String(value).split(/[,\n]/)[0].trim();let m=first.match(/\/d\/([a-zA-Z0-9_-]+)/)||first.match(/[?&]id=([a-zA-Z0-9_-]+)/);if(m)return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1200`;return first}
+function normalizePhone(value){const digits=String(value||"").replace(/\D/g,"");if(!digits)return "";if(digits.startsWith("60"))return digits;if(digits.startsWith("0"))return "6"+digits;return digits}
+function rowToEquipment(row,index){const categoryRaw=equipmentField(row,["Category","Equipment Category","Type"]);const category=/rubber/i.test(categoryRaw)?"rubber":"blade";return {id:index+1,timestamp:equipmentField(row,["Timestamp","Submitted at"]),seller:equipmentField(row,["Name","Seller Name","Seller"]),phone:equipmentField(row,["WhatsApp Number","WhatsApp","Phone Number","Contact Number"]),category,brand:equipmentField(row,["Brand"]),model:equipmentField(row,["Model"]),usage:equipmentField(row,["New / Used","New or Used","Condition Type"]),condition:equipmentField(row,["Condition","Condition Details"]),price:equipmentField(row,["Price (RM)","Price","Selling Price"]),description:equipmentField(row,["Description","Details"]),photo:driveImageUrl(equipmentField(row,["Upload Photos","Photos","Photo","Images"])),status:equipmentField(row,["Status","Approval Status"])}}
+function moneyLabel(value){const raw=String(value||"").trim();if(!raw)return "Price not stated";return /^rm/i.test(raw)?raw:`RM ${raw}`}
+function renderEquipment(){const grid=document.getElementById("equipmentGrid"),status=document.getElementById("equipmentStatus");if(!grid)return;const q=(document.getElementById("equipmentSearch")?.value||"").trim().toLowerCase();let list=equipmentItems.filter(item=>item.status.toLowerCase()==="approved");if(equipmentCategory!=="all")list=list.filter(item=>item.category===equipmentCategory);if(q)list=list.filter(item=>`${item.brand} ${item.model} ${item.description} ${item.seller}`.toLowerCase().includes(q));status.textContent=`${list.length} approved listing${list.length===1?"":"s"}`;if(!list.length){grid.innerHTML=`<div class="equipment-empty"><div style="font-size:42px;margin-bottom:10px">🏓</div><strong>No approved equipment listings yet.</strong><p>New submissions will appear here after the MYTT admin changes the Status column to Approved.</p></div>`;return}grid.innerHTML=list.map(item=>{const phone=normalizePhone(item.phone);const contact=phone?`<a class="equipment-contact" href="https://wa.me/${phone}?text=${encodeURIComponent(`Hi ${item.seller||"seller"}, I saw your ${item.brand} ${item.model} listing on MYTT.`)}" target="_blank" rel="noopener">Contact Seller</a>`:"";return `<article class="equipment-card"><div class="equipment-photo">${item.photo?`<img src="${escapeHtml(item.photo)}" alt="${escapeHtml(`${item.brand} ${item.model}`)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`:""}<span class="equipment-photo-placeholder" style="${item.photo?"display:none":""}">${item.category==="rubber"?"🟥":"🏓"}</span><span class="equipment-category-badge">${item.category==="rubber"?"Rubber":"Blade"}</span></div><div class="equipment-card-body"><h3>${escapeHtml(item.brand||"Unspecified brand")}</h3><p class="equipment-model">${escapeHtml(item.model||"Model not stated")}</p><div class="equipment-price">${escapeHtml(moneyLabel(item.price))}</div><div class="equipment-meta">${item.usage?`<span>${escapeHtml(item.usage)}</span>`:""}${item.condition?`<span>${escapeHtml(item.condition)}</span>`:""}</div>${item.description?`<div class="equipment-description">${escapeHtml(item.description)}</div>`:""}<p class="equipment-seller">Seller: <strong>${escapeHtml(item.seller||"MYTT member")}</strong></p>${contact}</div></article>`}).join("")}
+async function loadEquipment(){const grid=document.getElementById("equipmentGrid"),status=document.getElementById("equipmentStatus");if(!config.equipmentCsv||!grid)return;try{const rows=await fetchRows(config.equipmentCsv);equipmentItems=rows.map(rowToEquipment);renderEquipment()}catch(e){console.error("Failed to load equipment",e);grid.innerHTML=`<div class="equipment-empty"><strong>Unable to load equipment listings.</strong><p>Check that the Google Sheet is shared or published and the CSV link is accessible.</p></div>`;if(status)status.textContent="Load failed"}}
+
+function bindEvents(){document.addEventListener("input",e=>{if(e.target.id==="globalSearch")renderSearch();if(e.target.id==="playersSearch")renderPlayers();if(e.target.id==="equipmentSearch")renderEquipment()});document.addEventListener("change",e=>{if(e.target.id==="playersFilter")renderPlayers()});document.addEventListener("click",e=>{const tab=e.target.closest("[data-equipment-category]");if(tab){equipmentCategory=tab.dataset.equipmentCategory;document.querySelectorAll("[data-equipment-category]").forEach(x=>x.classList.toggle("active",x===tab));renderEquipment()}const p=e.target.closest("[data-player]");if(p){e.stopPropagation();openProfile(p.dataset.player);}if(e.target.matches("[data-close-modal]"))closeProfile()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeProfile()})}
 async function loadMatchResults(){if(!config.matchResultsCsv)return;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB)}catch(e){console.error("Failed to load match results",e);matchResults=[]}}
-async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");renderPlayers();renderSearch()}
+async function loadAll(){await loadEquipment();await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");renderPlayers();renderSearch()}
 bindEvents();loadAll();setInterval(loadAll,60000);
+
+document.addEventListener("click", function(e){
+  const target = e.target;
+  if(target && target.textContent && target.textContent.trim() === "×"){
+    closeProfile();
+  }
+});
+
+/* MYTT Mobile Big Close Button */
+(function(){
+  const bigClose = document.createElement("button");
+  bigClose.innerHTML = "×";
+  bigClose.id = "mobileBigCloseProfile";
+
+  bigClose.style.position = "fixed";
+  bigClose.style.top = "18px";
+  bigClose.style.right = "18px";
+  bigClose.style.width = "70px";
+  bigClose.style.height = "70px";
+  bigClose.style.borderRadius = "50%";
+  bigClose.style.border = "2px solid rgba(255,255,255,.35)";
+  bigClose.style.background = "rgba(0,0,0,.75)";
+  bigClose.style.color = "#fff";
+  bigClose.style.fontSize = "46px";
+  bigClose.style.fontWeight = "900";
+  bigClose.style.zIndex = "999999999";
+  bigClose.style.display = "none";
+  bigClose.style.alignItems = "center";
+  bigClose.style.justifyContent = "center";
+  bigClose.style.cursor = "pointer";
+  bigClose.style.touchAction = "manipulation";
+
+  document.body.appendChild(bigClose);
+
+  function isProfileOpen(){
+    const modal = document.getElementById("profileModal");
+    return modal && !modal.classList.contains("hidden");
+  }
+
+  function updateBigClose(){
+    bigClose.style.display = isProfileOpen() ? "flex" : "none";
+  }
+
+  bigClose.addEventListener("click", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    const modal = document.getElementById("profileModal");
+    if(modal) modal.classList.add("hidden");
+    bigClose.style.display = "none";
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(updateBigClose, 100);
+  });
+
+  setInterval(updateBigClose, 300);
+})();

@@ -1,85 +1,307 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MYTT V4.0.1 Profile Pro</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#050506">
+  <title>MYTT V13 — Malaysia Table Tennis Rating System</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="./"><span class="brand-icon">🏓</span><span><strong>MYTT</strong><small>Malaysia Table Tennis Rating System</small></span></a>
+  <a class="brand" href="#home">
+    <span class="brand-icon">🏓</span>
+    <span>
+      <strong>MYTT</strong>
+      <small>Malaysia Table Tennis Rating System</small>
+    </span>
+  </a>
   <nav class="nav">
-    <a href="#home">Home</a><a href="#search">Search</a><a href="#singles">Singles</a><a href="#doubles">Doubles</a><a href="#players">Players</a><a href="#submit">Join / Submit</a>
+    <a href="#home">Home</a>
+    <a href="#search">Search</a>
+    <a href="#singles">Singles</a>
+    <a href="#doubles">Doubles</a>
+    <a href="#players">Players</a>
+    <a href="#equipment">Equipment</a>
+    <a href="#submit">Join / Submit</a>
   </nav>
 </header>
+
 <main id="home">
-<section class="hero">
-  <div>
-    <p class="kicker">MYTT Official Platform</p>
-    <h1>Play. Compete. Improve. Rank.</h1>
-    <p class="intro">Live rankings, player profiles, MYTT tiers and match result submission in one official platform.</p>
-    <div id="submit" class="cta-grid">
-      <a class="cta cta-red" href="https://docs.google.com/forms/d/e/1FAIpQLSfjxBBPNNCF92Aq89YZ-n9-oq5F0WtuNPD3zK6D_3woZLS9aw/viewform?usp=header" target="_blank"><span>🏓</span><div><strong>Submit Singles Result</strong><small>Open match result form</small></div></a>
-      <a class="cta cta-dark" href="https://docs.google.com/forms/d/e/1FAIpQLSe3cKNpJLp8RtUpAPV4Gg1jyBAiNCQ13Vlfz1RHGZoQyjHClg/viewform?usp=header" target="_blank"><span>👥</span><div><strong>Submit Doubles Result</strong><small>Open match result form</small></div></a>
-      <a class="cta cta-dark" href="https://docs.google.com/forms/d/e/1FAIpQLSeLXNo4hjiPcs461pMem5qzGyAOrvZga2MOEtSpoWMteZAODw/viewform?usp=header" target="_blank"><span>👤</span><div><strong>Join MYTT</strong><small>Register as an official MYTT player</small></div></a>
-      <a class="cta cta-dark" href="#players"><span>🔍</span><div><strong>View Players</strong><small>Search official profiles</small></div></a>
+  <section class="hero hero-v5">
+    <div class="hero-copy-v5">
+      <p class="kicker">MYTT Official Platform</p>
+
+      <h1 class="hero-title-v5">
+        <span>Play.</span>
+        <span>Compete.</span>
+        <span>Improve.</span>
+        <span class="rank-word">Rank.</span>
+      </h1>
+
+      <p class="hero-tagline">Malaysia's competitive table tennis rating platform.</p>
+      <p class="intro hero-intro-v5">Track every match. Climb every tier. Become a champion.</p>
+
+      <div id="submit" class="cta-grid cta-grid-v5">
+        <a class="cta cta-red" href="https://docs.google.com/forms/d/e/1FAIpQLSfjxBBPNNCF92Aq89YZ-n9-oq5F0WtuNPD3zK6D_3woZLS9aw/viewform?usp=header" target="_blank" rel="noopener">
+          <span>🏓</span><div><strong>Submit Singles Result</strong><small>Open match result form</small></div>
+        </a>
+        <a class="cta cta-dark" href="https://docs.google.com/forms/d/e/1FAIpQLSe3cKNpJLp8RtUpAPV4Gg1jyBAiNCQ13Vlfz1RHGZoQyjHClg/viewform?usp=header" target="_blank" rel="noopener">
+          <span>👥</span><div><strong>Submit Doubles Result</strong><small>Open match result form</small></div>
+        </a>
+        <a class="cta cta-dark" href="https://docs.google.com/forms/d/e/1FAIpQLSeLXNo4hjiPcs461pMem5qzGyAOrvZga2MOEtSpoWMteZAODw/viewform?usp=header" target="_blank" rel="noopener">
+          <span>👤</span><div><strong>Join MYTT</strong><small>Register as an official MYTT player</small></div>
+        </a>
+        <a class="cta cta-dark" href="#players">
+          <span>🔍</span><div><strong>View Players</strong><small>Search official profiles</small></div>
+        </a>
+      </div>
     </div>
-  </div>
-  <div class="hero-card"><div class="pulse-ball"></div><p>MYTT Tier System</p><h2>🌱 Rookie → ⚔️ Challenger</h2><span>Push your rating. Reach the next tier.</span></div>
-</section>
 
-<section id="search" class="search-section">
-  <div class="section-head compact"><div><p class="kicker">Search</p><h2>Find Player</h2></div></div>
-  <div class="search-card">
-    <input id="globalSearch" type="search" placeholder="Search player name, e.g. Danny, Hang, YK..." autocomplete="off">
-    <div id="searchResults" class="search-results"><p class="muted">Type a player name to view rating, tier and profile.</p></div>
-  </div>
-</section>
+    <section class="hero-rank-card-v5">
+      <div class="rank-card-glow"></div>
 
-<section id="players" class="players-section">
-  <div class="section-head"><div><p class="kicker">Players</p><h2>Official Players</h2></div><span class="status">Mobile avatars</span></div>
-  <div class="players-toolbar">
-    <input id="playersSearch" type="search" placeholder="Search official players..." autocomplete="off">
-    <select id="playersFilter">
-      <option value="all">All Players</option>
-      <option value="approved">Approved Only</option>
-      <option value="leaderboard">Leaderboard Players</option>
-    </select>
-  </div>
-  <div id="playersGrid" class="players-grid"><p class="loading">Loading players...</p></div>
-</section>
+      <div class="rank-card-head-v5">
+        <div>
+          <p>MYTT Rank Journey</p>
+          <h2>Climb to the Top</h2>
+        </div>
+        <div class="current-rating-v5">
+          <small>Starting Rating</small>
+          <strong>1500</strong>
+          <span>🌱 Rookie</span>
+        </div>
+      </div>
 
-<section id="singles" class="board-section">
-  <div class="section-head"><div><p class="kicker">Singles</p><h2>Singles Leaderboard</h2></div><span id="singlesStatus" class="status">Loading...</span></div>
-  <div class="board-card"><div class="table-scroll"><table><thead><tr><th>Rank</th><th>Player</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead><tbody id="singlesBody"><tr><td colspan="7" class="loading">Loading singles leaderboard...</td></tr></tbody></table></div></div>
-</section>
+      <div class="homepage-rank-road">
+        <article class="home-rank-node active tier-rookie-home">
+          <div class="home-rank-orb">🌱</div>
+          <span>Rookie</span><small>1500</small>
+          <b class="you-marker">▲<em>You are here</em></b>
+        </article>
 
-<section id="doubles" class="board-section">
-  <div class="section-head"><div><p class="kicker">Doubles</p><h2>Doubles Leaderboard</h2></div><span id="doublesStatus" class="status">Loading...</span></div>
-  <div class="board-card"><div class="table-scroll"><table><thead><tr><th>Rank</th><th>Team</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead><tbody id="doublesBody"><tr><td colspan="7" class="loading">Loading doubles leaderboard...</td></tr></tbody></table></div></div>
-</section>
+        <i class="home-rank-line line-red"></i>
 
-<section id="notice" class="info-grid">
-  <article><h3>📅 Weekly Schedule</h3><p><strong>Monday</strong> — Singles Matches</p><p><strong>Friday</strong> — Doubles Matches</p><p><strong>Sunday</strong> — Optional / Make-up Matches</p></article>
-  <article><h3>📢 Notice</h3><p>After each match, only one player/team needs to submit the result.</p><p>Ratings and leaderboards update automatically after each submission.</p><p>Doubles uses fixed teams only. Changing partner starts from 1500 rating.</p></article>
+        <article class="home-rank-node tier-challenger-home">
+          <div class="home-rank-orb">⚔️</div>
+          <span>Challenger</span><small>1600</small>
+        </article>
+
+        <i class="home-rank-line line-orange"></i>
+
+        <article class="home-rank-node tier-elite-home">
+          <div class="home-rank-orb">⭐</div>
+          <span>Elite</span><small>1700</small>
+        </article>
+
+        <i class="home-rank-line line-gold"></i>
+
+        <article class="home-rank-node tier-master-home">
+          <div class="home-rank-orb">🔥</div>
+          <span>Master</span><small>1800</small>
+        </article>
+
+        <i class="home-rank-line line-yellow"></i>
+
+        <article class="home-rank-node tier-legend-home">
+          <div class="home-rank-orb">👑</div>
+          <span>Legend</span><small>1900</small>
+        </article>
+
+        <i class="home-rank-line line-green"></i>
+
+        <article class="home-rank-node tier-grandmaster-home">
+          <div class="home-rank-orb">💎</div>
+          <span>Grandmaster</span><small>2000</small>
+        </article>
+
+        <i class="home-rank-line line-cyan"></i>
+
+        <article class="home-rank-node tier-immortal-home">
+          <div class="home-rank-orb">⚡</div>
+          <span>Immortal</span><small>2100</small>
+        </article>
+
+        <i class="home-rank-line line-purple"></i>
+
+        <article class="home-rank-node tier-champion-home">
+          <div class="home-rank-orb">🏆</div>
+          <span>MYTT Champion</span><small>2200</small>
+        </article>
+
+        <i class="home-rank-line line-pink"></i>
+
+        <article class="home-rank-node tier-hof-home">
+          <div class="home-rank-orb">🌟</div>
+          <span>Hall of Fame</span><small>2300</small>
+        </article>
+      </div>
+
+      <div class="hero-progress-card">
+        <div class="hero-progress-head">
+          <strong>🌱 Rookie</strong>
+          <strong>⚔️ Challenger</strong>
+        </div>
+        <div class="hero-progress-track"><span style="width:0%"></span></div>
+        <p><b>1500</b> / 1600 · 100 pts to Challenger</p>
+      </div>
+    </section>
+  </section>
+
+  <section class="feature-strip">
+    <article><span>📊</span><div><strong>Live Rankings</strong><small>Real-time player updates</small></div></article>
+    <article><span>👤</span><div><strong>Player Profiles</strong><small>Stats and match history</small></div></article>
+    <article><span>🛡️</span><div><strong>MYTT Tier System</strong><small>Climb through 9 tiers</small></div></article>
+    <article><span>🏆</span><div><strong>Compete & Improve</strong><small>Every match matters</small></div></article>
+  </section>
+
+  <section id="search" class="search-section">
+    <div class="section-head compact"><div><p class="kicker">Search</p><h2>Find Player</h2></div></div>
+    <div class="search-card">
+      <input id="globalSearch" type="search" placeholder="Search player name, e.g. Danny, Hang, YK..." autocomplete="off">
+      <div id="searchResults" class="search-results"><p class="muted">Type a player name to view rating, tier and profile.</p></div>
+    </div>
+  </section>
+
+  <section id="players" class="players-section">
+    <div class="section-head"><div><p class="kicker">Players</p><h2>Official Players</h2></div><span class="status">Official Profiles</span></div>
+    <div class="players-toolbar">
+      <input id="playersSearch" type="search" placeholder="Search official players..." autocomplete="off">
+      <select id="playersFilter">
+        <option value="all">All Players</option>
+        <option value="approved">Approved Only</option>
+        <option value="leaderboard">Leaderboard Players</option>
+      </select>
+    </div>
+    <div id="playersGrid" class="players-grid"><p class="loading">Loading players...</p></div>
+  </section>
+
+
+  <section id="equipment" class="equipment-section">
+    <div class="section-head equipment-head">
+      <div><p class="kicker">Marketplace</p><h2>Table Tennis Equipment</h2></div>
+      <a class="equipment-sell-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSf2wCpOzXTZm0hUFECz47latMEJKy3iwptkuQoiRjD2ffmRXw/viewform" target="_blank" rel="noopener">+ Sell Equipment</a>
+    </div>
+    <p class="equipment-intro">Buy and sell table tennis blades and rubbers within the MYTT community. MYTT only provides the listing platform; buyers and sellers arrange payment and delivery directly.</p>
+    <div class="equipment-toolbar">
+      <div class="equipment-tabs" role="tablist" aria-label="Equipment category">
+        <button class="equipment-tab active" data-equipment-category="all" type="button">All</button>
+        <button class="equipment-tab" data-equipment-category="blade" type="button">🏓 Blades</button>
+        <button class="equipment-tab" data-equipment-category="rubber" type="button">🟥 Rubbers</button>
+      </div>
+      <input id="equipmentSearch" type="search" placeholder="Search brand or model..." autocomplete="off">
+    </div>
+    <div id="equipmentStatus" class="equipment-count">Loading approved listings...</div>
+    <div id="equipmentGrid" class="equipment-grid"><p class="loading">Loading equipment...</p></div>
+  </section>
+
+  <section id="singles" class="board-section">
+    <div class="section-head"><div><p class="kicker">Singles</p><h2>Singles Leaderboard</h2></div><span id="singlesStatus" class="status">Loading...</span></div>
+    <div class="board-card"><div class="table-scroll"><table>
+      <thead><tr><th>Rank</th><th>Player</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
+      <tbody id="singlesBody"><tr><td colspan="7" class="loading">Loading singles leaderboard...</td></tr></tbody>
+    </table></div></div>
+  </section>
+
+  <section id="doubles" class="board-section">
+    <div class="section-head"><div><p class="kicker">Doubles</p><h2>Doubles Leaderboard</h2></div><span id="doublesStatus" class="status">Loading...</span></div>
+    <div class="board-card"><div class="table-scroll"><table>
+      <thead><tr><th>Rank</th><th>Team</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
+      <tbody id="doublesBody"><tr><td colspan="7" class="loading">Loading doubles leaderboard...</td></tr></tbody>
+    </table></div></div>
+  </section>
+
+  <section id="notice" class="info-grid">
+  <article class="info-card schedule-card">
+    <h3>📅 Weekly Schedule</h3>
+
+    <div class="schedule-item">
+      <span class="day">🏓 Monday</span>
+      <span class="desc">Singles Match Day</span>
+    </div>
+
+    <div class="schedule-item">
+      <span class="day">👥 Tuesday</span>
+      <span class="desc">Doubles Match Day</span>
+    </div>
+
+    <div class="schedule-item">
+      <span class="day">👥 Thursday</span>
+      <span class="desc">Doubles Make-up Day</span>
+    </div>
+
+    <div class="schedule-item">
+      <span class="day">🏓 Friday</span>
+      <span class="desc">Singles Make-up Day</span>
+    </div>
+  </article>
+
+  <article class="info-card rules-card">
+    <h3>📢 Competition Rules</h3>
+
+    <div class="rule-item">
+      <span class="icon">✅</span>
+      <span>Only one player or team needs to submit each match result.</span>
+    </div>
+
+    <div class="rule-item">
+      <span class="icon">⚡</span>
+      <span>Ratings and leaderboards update automatically after every valid submission.</span>
+    </div>
+
+    <div class="rule-item">
+      <span class="icon">⏳</span>
+      <span>A minimum interval of <strong>14 days</strong> is required before playing the same opponent in Singles or the same doubles team again.</span>
+    </div>
+
+    <div class="rule-item">
+      <span class="icon">🚫</span>
+      <span>Duplicate matches submitted within the <strong>14-day interval</strong> will be automatically rejected and will not affect the ratings.</span>
+    </div>
+
+    <div class="rule-item">
+      <span class="icon">🤝</span>
+      <span>Doubles uses <strong>fixed teams</strong>. Changing partners resets the team rating to <strong>1500</strong>.</span>
+    </div>
+
+    <div class="rule-item">
+      <span class="icon">📅</span>
+      <span>The 14-day interval is calculated from the submission time of the previous valid match result.</span>
+    </div>
+
+    <div class="rule-item">
+      <span class="icon">🏓</span>
+      <span>MYTT reserves the right to reject invalid, duplicate, or fraudulent match submissions to maintain a fair rating system.</span>
+    </div>
+
+    <div class="rule-item">
+      <span class="icon">💡</span>
+      <span>If you are unsure whether a match is eligible, please contact the MYTT organizer before submitting the result.</span>
+    </div>
+  </article>
 </section>
 </main>
 
 <div id="profileModal" class="modal hidden">
   <div class="modal-backdrop" data-close-modal></div>
-  <div class="modal-card"><button class="modal-close" data-close-modal>×</button><div id="profileContent"></div></div>
+  <div class="modal-card">
+    <button class="modal-close" data-close-modal aria-label="Close profile">×</button>
+    <div id="profileContent"></div>
+  </div>
 </div>
+
 <footer><strong>🏓 MYTT</strong><span>Malaysia Table Tennis Rating System</span><span>© 2026 MYTT. All Rights Reserved.</span></footer>
+
 <script>
 window.MYTT = {
   singlesCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=0&single=true&output=csv",
   doublesCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSluDdRh-2MZW7emwK5wqPgFH-DUEgtWHbLcoZbThrl4rCEJOD25ztXK15S7_MPibRKNee5W0Y9GCY0/pub?gid=20383104&single=true&output=csv",
   playerDbCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQVFMviJw4bvH24DESoH7oOsBgk5xHNSZ5PMrW--UPOwFilVx8PDlq06khW70NHjPzEwYXDKe2D5OKB/pub?gid=508447017&single=true&output=csv",
   matchResultsCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=909390526&single=true&output=csv",
-  singlesForm: "https://docs.google.com/forms/d/e/1FAIpQLSfjxBBPNNCF92Aq89YZ-n9-oq5F0WtuNPD3zK6D_3woZLS9aw/viewform?usp=header",
-  doublesForm: "https://docs.google.com/forms/d/e/1FAIpQLSe3cKNpJLp8RtUpAPV4Gg1jyBAiNCQ13Vlfz1RHGZoQyjHClg/viewform?usp=header",
-  joinForm: "#"
+  equipmentCsv: "https://docs.google.com/spreadsheets/d/14KBAVeLjHuhJWy4dw6pcUoaWBx1C8EoUADSqd_kzrYg/export?format=csv&gid=1638433100",
+  equipmentFormUrl: "https://docs.google.com/forms/d/e/1FAIpQLSf2wCpOzXTZm0hUFECz47latMEJKy3iwptkuQoiRjD2ffmRXw/viewform"
 };
 </script>
 <script src="app.js"></script>
-</body></html>
+</body>
+</html>
